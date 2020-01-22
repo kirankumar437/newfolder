@@ -1,0 +1,4 @@
+Docker is built with safety in mind and comes with a wide variety of security features. In this lesson, we will discuss some important aspects of Docker's internal security that must be kept in mind when using Docker, as well as at the time of taking the Docker Certified Associate exam.
+
+Relevant Documentation
+https://docs.docker.com/engine/security/security/

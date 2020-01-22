@@ -1,0 +1,33 @@
+Docker supports the ability to securely store certain encryption keys. These encryption keys are used to encrypt sensitive cluster data, but are stored unencrypted on the disks of swarm managers by default. Autolock allows for greater security for these keys, but requires each manager to be unlocked whenever Docker restarts. In this lesson, we will discuss autolock. We will demonstrate how to enable and disable autolock, as well as how to use it when it is enabled.
+
+Relevant Documentation:-
+https://docs.docker.com/engine/swarm/swarm_manager_locking/
+
+Lesson Reference:-
+Enable autolock.
+docker swarm update --autolock=true
+
+Make note of the unlock key!
+
+Run a command to interact with the swarm, then restart docker and try the command again to verify that the swarm is locked.
+
+docker node ls
+sudo systemctl restart docker
+docker node ls
+
+
+Unlock the swarm using the unlock key and verify that it is unlocked.
+docker swarm unlock
+docker node ls
+
+
+Obtain the existing unlock key.
+docker swarm unlock-key
+
+Rotate the unlock key.
+docker swarm unlock-key --rotate
+
+Disable autolock.
+docker swarm update --autolock=false
+sudo systemctl restart docker
+docker node ls

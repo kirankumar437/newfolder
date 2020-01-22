@@ -1,0 +1,26 @@
+Storing and accessing container logs is an essential part of managing containers. Docker logging drivers allow us to choose our own logging implementation to fit our particular needs. In this lesson, we will discuss logging drivers. We will also see how to customize the system default logging driver configuration, as well as how to override the defaults for individual containers.
+
+Relevant Documentation
+https://docs.docker.com/config/containers/logging/configure/
+
+Lesson Reference
+Check the current default logging driver:
+docker info | grep Logging
+
+Edit daemon.json to set a new default logging driver configuration:
+sudo vi /etc/docker/daemon.json
+
+Add the configuration to daemon.json:
+
+{
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "15m"
+  }
+}
+
+Restart docker after editing daemon.json:
+sudo systemctl restart docker
+
+Run a docker container, overriding the system default logging driver settings:
+docker run --log-driver json-file --log-opt max-size=50m nginx

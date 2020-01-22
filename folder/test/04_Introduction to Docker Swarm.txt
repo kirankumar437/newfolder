@@ -1,0 +1,4 @@
+Docker Swarm is a great way to get even more value out of using containers. It allows for easily building a distributed cluster where a container can be run across multiple available servers. In this lesson we will briefly introduce the basics of what Docker swarm can do. We will also discuss the specifications for the servers we'll be using, in order to proceed as we install and configure a swarm cluster in the following lessons.
+
+Relevant Documentation
+https://docs.docker.com/engine/swarm/key-concepts/

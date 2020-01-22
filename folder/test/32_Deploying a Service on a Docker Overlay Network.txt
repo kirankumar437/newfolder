@@ -1,0 +1,20 @@
+Overlay networks provide transparent network connectivity to containers running in a Swarm, regardless of whether they are running on the same or different nodes. In this lesson, we will discuss overlay networks and demonstrate how to use them to connect containers in a Docker Swarm.
+
+Relevant Documentation
+https://docs.docker.com/network/overlay/
+
+Lesson Reference
+List the networks on the host. You should be able to see the default ingress overlay network.
+
+ docker network ls
+
+
+Create an attachable overlay network.
+
+ docker network create --driver overlay --attachable my-overlay
+
+
+Create a service that uses that network, then test the network by attaching a container to it and using the container to communicate with the service.
+
+ docker service create --name overlay-service --network my-overlay --replicas 3 nginx
+ docker run --rm --network my-overlay radial/busyboxplus:curl curl overlay-service:80

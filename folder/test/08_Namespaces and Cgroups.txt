@@ -1,0 +1,5 @@
+Namespaces and cgroups are Linux Kernel features which Docker uses in order to provide the basic functionality of running containers. It is important to have a basic understanding of these concepts in order to have a general idea of how Docker works. In this lesson, we will discuss namespaces and cgroups. We will talk about what they are and how Docker uses them in order to provide container functionality.
+
+Relevant Documentation
+https://docs.docker.com/engine/docker-overview/#the-underlying-technology
+https://docs.docker.com/engine/security/userns-remap/

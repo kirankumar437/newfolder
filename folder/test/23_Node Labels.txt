@@ -1,0 +1,33 @@
+Sometimes, you may wish to have more control over which nodes will be used to execute particular tasks in your swarm. In this lesson, we will talk about how you can use node labels to influence and even control which nodes will and will not be used to execute a given service's tasks.
+
+Relevant Documentation:-
+https://docs.docker.com/engine/reference/commandline/node_update/#add-label-metadata-to-a-node
+https://docs.docker.com/engine/swarm/services/#placement-constraints
+
+Lesson Reference:-
+List your current nodes.
+docker node ls
+
+
+Add a label to a node.
+docker node update --label-add availability_zone=east <NODE_NAME>
+docker node update --label-add availability_zone=west <NODE_NAME>
+
+
+View existing labels with:
+docker node inspect --pretty <NODE_NAME>
+
+
+You can use --constraint when creating a service to restrict which nodes will be used to execute a service's tasks.
+
+docker service create --name nginx-east --constraint node.labels.availability_zone==east --replicas 3 nginx
+docker service ps nginx-east
+
+docker service create --name nginx-west --constraint node.labels.availability_zone!=east --replicas 3 nginx
+docker service ps nginx-west
+
+
+
+Use --placement-pref to spread tasks evenly based on the value of a specific label.
+docker service create --name nginx-spread --placement-pref spread=node.labels.availability_zone --replicas 3 nginx
+docker service ps nginx-spread

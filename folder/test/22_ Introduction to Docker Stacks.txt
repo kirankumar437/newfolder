@@ -1,0 +1,82 @@
+Docker Swarm's orchestration functionality really shines when using stacks. Stacks allow you to easily manage complex, multi-container applications and orchestrate them within your swarm cluster. In this lesson, we will discuss Docker stacks. We will demonstrate how to create and manage Docker stacks, as well as a few of the available options for designing stacks.
+
+Relevant Documentation:-
+https://docs.docker.com/get-started/part5/
+https://docs.docker.com/engine/reference/commandline/stack/
+
+Lesson Reference:-
+Create a compose file for the stack.
+
+ vi simple-stack.yml
+ version: '3'
+ services:
+   web:
+     image: nginx
+   busybox:
+     image: radial/busyboxplus:curl
+     command: /bin/sh -c "while true; do echo Hello!; sleep 10; done"
+
+
+Deploy the stack and examine it using various commands.
+docker stack deploy -c simple-stack.yml simple
+docker stack ls
+docker stack ps simple
+docker stack services simple
+docker service logs simple_busybox
+
+
+Modify the stack to use an environment variable.
+
+ vi simple-stack.yml
+ version: '3'
+ services:
+   web:
+     image: nginx
+   busybox:
+     image: radial/busyboxplus:curl
+     command: /bin/sh -c "while true; do echo $$MESSAGE; sleep 10; done"
+     environment:
+     - MESSAGE=Hello!
+ docker stack deploy -c simple-stack.yml simple
+ docker service logs simple_busybox
+
+
+Modify the stack to expose a port.
+
+ vi simple-stack.yml
+ version: '3'
+ services:
+   web:
+     image: nginx
+     ports:
+     - "8080:80"
+   busybox:
+     image: radial/busyboxplus:curl
+     command: /bin/sh -c "while true; do echo $$MESSAGE; sleep 10; done"
+     environment:
+     - MESSAGE=Hello!
+ docker stack deploy -c simple-stack.yml simple
+ curl localhost:8080
+
+
+Modify the stack to use the BusyBox service to communicate with the web service.
+
+ vi simple-stack.yml
+ version: '3'
+ services:
+   web:
+     image: nginx
+     ports:
+     - "8080:80"
+   busybox:
+     image: radial/busyboxplus:curl
+     command: /bin/sh -c "while true; do echo $$MESSAGE; curl web:80; sleep 10; done"
+     environment:
+     - MESSAGE=Hello!
+
+
+docker stack deploy -c simple-stack.yml simple
+
+
+Delete the stack.
+docker stack rm simple

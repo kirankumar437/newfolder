@@ -1,0 +1,15 @@
+Images are a key component when using Docker. They provide the components and software necessary to run containers. In this lesson, we will discuss Docker images. We will talk about how they are built using a layered file system, and the advantages of the layered file system model. We will also demonstrate how to examine the layers of an existing image.
+
+Relevant Documentation:-
+https://docs.docker.com/v17.09/engine/userguide/storagedriver/imagesandcontainers/
+
+Lesson Reference:-
+
+Run a container. The image will be automatically downloaded if it does not exist on the system:
+docker run nginx:1.15.8
+
+Download an image:
+docker image pull nginx
+
+View file system layers in an image:
+docker image history nginx

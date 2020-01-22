@@ -1,0 +1,38 @@
+Docker containers are designed so that their internal storage can be easily destroyed. However, sometimes you might need more permanent data. Docker volumes and bind mounts allow you to attach external storage to containers. In this lesson, we will discuss bind mounts and volumes. We will also demonstrate how to create them using both the --mount and -v flags. We will talk about sharing volumes between multiple containers and go over some commands you can use to manage volumes.
+
+Relevant Documentation:-
+https://docs.docker.com/storage/
+https://docs.docker.com/storage/bind-mounts/
+https://docs.docker.com/storage/volumes/
+
+Lesson Reference:-
+Create a directory on the host with some test data.
+cd ~/
+mkdir message
+echo Hello, world! > message/message.txt
+
+
+Mount the directory to a container with a bind mount.
+docker run --mount type=bind,source=/home/cloud_user/message,destination=/root,readonly busybox cat /root/message.txt
+
+
+Run a container with a mounted volume.
+docker run --mount type=volume,source=my-volume,destination=/root busybox sh -c 'echo hello > /root/message.txt && cat /root/message.txt'
+
+
+Use the -v syntax to create a bind mount and a volume.
+docker run -v /home/cloud_user/message:/root:ro busybox cat /root/message.txt
+docker run -v my-volume:/root busybox sh -c 'cat /root/message.txt'
+
+
+Use a volume to share data between containers.
+docker run --mount type=volume,source=shared-volume,destination=/root busybox sh -c 'echo I wrote this! > /root/message.txt'
+
+docker run --mount type=volume,source=shared-volume,destination=/anotherplace busybox cat /anotherplace/message.txt
+
+
+Create and manage volumes using docker volume commands.
+docker volume create test-volume
+docker volume ls
+docker volume inspect test-volume
+docker volume rm test-volume

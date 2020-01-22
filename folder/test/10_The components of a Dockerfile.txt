@@ -1,0 +1,34 @@
+Docker Hub provides a wide variety of useful public images. However, anyone running their own software using Docker needs to know how to create images themselves. In this lesson we will discuss the Dockerfile, the primary mechanism for defining an image that we want to create. We will demonstrate some of the most common Dockerfile directives by building a simple custom Nginx image. We will also demonstrate how to build a real image using the Dockerfile and how to run that image as a container.
+
+Relevant Documentation:-
+https://docs.docker.com/engine/reference/builder/
+
+Lesson Reference:-
+Set up a project directory:
+
+mkdir ~/custom-nginx
+cd ~/custom-nginx
+vi index.html
+
+Add a simple message to index.html:
+Hello, World!
+
+Create a Dockerfile:
+vi Dockerfile
+
+Add some directives to the Dockerfile:
+# Simple nginx image
+FROM ubuntu:bionic
+
+ENV NGINX_VERSION 1.14.0-0ubuntu1.6
+
+RUN apt-get update && apt-get install -y curl
+RUN apt-get update && apt-get install -y nginx=$NGINX_VERSION
+
+CMD ["nginx", "-g", "daemon off;"]
+
+
+Build and test the image:
+docker build -t custom-nginx .
+docker run --name custom-nginx -d -p 8080:80 custom-nginx
+curl localhost:8080
