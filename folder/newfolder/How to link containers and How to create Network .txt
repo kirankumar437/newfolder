@@ -1,0 +1,145 @@
+How to link two containers
+
+step1: docker run -d --name my-mongodb mongo (CMD)
+step2: docker run -d -p 8000:8000 --link my-mongodb:mongodb kiran437/testapp (CMD) (image name)
+
+
+
+How to create the network for containers
+
+step1: docker network create --driver bridge isolated_network (CMD)
+
+step2:to check the network is created or not ?
+	docker network ls (CMD)
+	NETWORK ID          NAME                DRIVER              SCOPE
+	539b8863fb74        bridge              bridge              local
+	4ef4308c558d        host                host                local
+	1c4c06b03b63        isloated_network    bridge              local
+	463d556f2d71        none                null                local
+
+step3:to inspect the network ?
+	docker network inspect isloated_network (CMD)
+	[
+    {
+        "Name": "isloated_network",
+        "Id": "1c4c06b03b63b29bef20047065420d90fb541ceaa4749039ee7996db639132c0",
+        "Created": "2019-09-06T08:23:24.498704357Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.18.0.0/16",
+                    "Gateway": "172.18.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {},
+        "Options": {},
+        "Labels": {}
+    }
+]
+
+step4:docker run -d --net=isloated_network --name mongodb1 mongo (CMD)
+step6:check the network ?
+	docker network inspect isloated_network (CMD)
+[
+    {
+        "Name": "isloated_network",
+        "Id": "1c4c06b03b63b29bef20047065420d90fb541ceaa4749039ee7996db639132c0",
+        "Created": "2019-09-06T08:23:24.498704357Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.18.0.0/16",
+                    "Gateway": "172.18.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {
+            "2c5f487b355c02a801f727b01443c48fed290bb8faa3bca306347bef1fe59da4": {
+                "Name": "mongodb1",
+                "EndpointID": "0a6aad671d1feb5aaf41f87c9433f81ab21f3a7972377eee0d59111927d9c918",
+                "MacAddress": "02:42:ac:12:00:02",
+                "IPv4Address": "172.18.0.2/16",
+                "IPv6Address": ""
+            }
+        },
+        "Options": {},
+        "Labels": {}
+    }
+]
+
+step7:docker run -d --net=isloated_network --name noadapp1 -p 8001:8001 kiran437/testapp (CMD)
+
+step8:docker network inspect isloated_network (CMD)
+
+[
+    {
+        "Name": "isloated_network",
+        "Id": "1c4c06b03b63b29bef20047065420d90fb541ceaa4749039ee7996db639132c0",
+        "Created": "2019-09-06T08:23:24.498704357Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.18.0.0/16",
+                    "Gateway": "172.18.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {
+            "2c5f487b355c02a801f727b01443c48fed290bb8faa3bca306347bef1fe59da4": {
+                "Name": "mongodb1",
+                "EndpointID": "0a6aad671d1feb5aaf41f87c9433f81ab21f3a7972377eee0d59111927d9c918",
+                "MacAddress": "02:42:ac:12:00:02",
+                "IPv4Address": "172.18.0.2/16",
+                "IPv6Address": ""
+            },
+            "be63b1326e7e5474af46e4f985ca3956c94d2bbc33186bb87679aa15b72b167c": {
+                "Name": "noadapp1",
+                "EndpointID": "c0b514933a58c878da1c936ce51d34e48a011be84015ff8720560e3e593a3b23",
+                "MacAddress": "02:42:ac:12:00:03",
+                "IPv4Address": "172.18.0.3/16",
+                "IPv6Address": ""
+            }
+        },
+        "Options": {},
+        "Labels": {}
+    }
+]
+
+

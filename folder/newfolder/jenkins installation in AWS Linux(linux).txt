@@ -1,0 +1,45 @@
+step 1:connect to your linux machine
+
+step2:update packages
+	sudo yum update
+
+step3:check the jave is installed.if not install java
+	java --version
+	sudo yum install java-1.8.0
+      To check and select one out of multiple java versiones avaliable
+	sudo /usr/sbin/alternatives --config java
+
+step4:download latest jenkins code package
+	sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
+
+step5:import a key file from jenkins-ci to enable installation from the package.	
+	sudo rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+
+step6:Install jenkins
+	sudo yum install jenkins -y
+
+step7:start jenkins
+	sudo service jenkins start
+
+step8:access jenkins server using the public DNS of your ec2 on port 8080
+	 http://server-ip-address:8080/
+
+step9:Then you could visit the directory path shown in above image and get the initial password to proceed with the installation.
+	sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+
+Useful tips
+
+To start jenkins on diffrent port 
+	update port number in : /etc/sysconfig/jenkins
+To stop jenkins 
+	sudo service jenkins stop
+To start
+	sudo service jenkins start
+To uninstall Jenkins
+	sudo service jenkins stop
+	sudo yum remove jenkins
+	sudo rm -r /var/lib/jenkins
+
+
+
